@@ -8,7 +8,7 @@ import next from "next";
 import Router from "koa-router";
 
 dotenv.config();
-const port = parseInt(process.env.PORT, 10) || 8081;
+const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({
   dev,

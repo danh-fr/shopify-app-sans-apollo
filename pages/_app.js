@@ -4,7 +4,12 @@ import { Provider, useAppBridge } from "@shopify/app-bridge-react";
 import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
 import "@shopify/polaris/dist/styles.css";
-import translations from "@shopify/polaris/locales/en.json";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+const apolloClient = new ApolloClient({
+  uri: "https://48p1r2roz4.sse.codesandbox.io",
+  cache: new InMemoryCache(),
+});
 
 function userLoggedInFetch(app) {
   const fetchFunction = authenticatedFetch(app);
@@ -31,16 +36,14 @@ function userLoggedInFetch(app) {
 function MyProvider(props) {
   const Component = props.Component;
 
-  return (
-      <Component {...props} />
-  );
+  return <Component {...props} />;
 }
 
 class MyApp extends App {
   render() {
     const { Component, pageProps, host } = this.props;
     return (
-      <AppProvider i18n={translations}>
+      <ApolloProvider client={apolloClient}>
         <Provider
           config={{
             apiKey: API_KEY,
@@ -50,7 +53,7 @@ class MyApp extends App {
         >
           <MyProvider Component={Component} {...pageProps} />
         </Provider>
-      </AppProvider>
+      </ApolloProvider>
     );
   }
 }
